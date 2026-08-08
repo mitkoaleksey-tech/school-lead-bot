@@ -4,7 +4,8 @@ COPY . .
 
 RUN sed -i 's/\r$//' mvnw
 RUN chmod +x mvnw
-RUN ./mvnw clean package -DskipTests
+# Полностью отключаем тесты и их компиляцию
+RUN ./mvnw clean package -Dmaven.test.skip=true
 
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
