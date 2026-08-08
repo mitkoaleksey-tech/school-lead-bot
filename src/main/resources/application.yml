@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/school_db
+    username: postgres
+    password: secret
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+bot:
+  username: "@shoolreshaemo_bot"
+  token: "8824875470:AAGL-aHlzzS6i5X1BMfSzAluCoZabekteEA"
+  subjects:
+    - "🐍 Python"
+    - "💻 Информатика"
+    - "⚛️ Физика"
+    - "📐 Математика"
+
+
+google:
+  spreadsheet:
+    id: "1pI7DSF0fVc5zcMNlNhNRLgvctQB0uiS8Rlb7C8eW0xI"
