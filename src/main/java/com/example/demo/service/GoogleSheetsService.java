@@ -10,6 +10,8 @@ import com.google.auth.oauth2.GoogleCredentials;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
@@ -22,11 +24,14 @@ public class GoogleSheetsService {
 
     public boolean appendRow(List<Object> rowData) {
         try {
-            InputStream credentialsStream = getClass().getResourceAsStream("/google-credentials.json");
-            if (credentialsStream == null) {
-                System.err.println("Файл google-credentials.json не найден!");
+            // Ищем файл ключей в корне рабочей директории контейнера или папки проекта
+            File credentialsFile = new File("google-credentials.json");
+            if (!credentialsFile.exists()) {
+                System.err.println("Файл google-credentials.json не найден по пути: " + credentialsFile.getAbsolutePath());
                 return false;
             }
+
+            InputStream credentialsStream = new FileInputStream(credentialsFile);
 
             GoogleCredentials credentials = GoogleCredentials.fromStream(credentialsStream)
                     .createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS));
@@ -45,10 +50,10 @@ public class GoogleSheetsService {
                     .setValueInputOption("USER_ENTERED")
                     .execute();
 
-            return true; // Успешно улетело в таблицy
+            return true;
         } catch (Exception e) {
             System.err.println("Ошибка отправки в Google Таблицу (сеть/SSL): " + e.getMessage());
-            return false; // Ошибка сети, вернем false, попробуем позже
+            return false;
         }
     }
 }
